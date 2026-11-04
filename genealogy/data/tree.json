@@ -1,0 +1,137 @@
+{
+  "people": {
+    "ernest_koller": {
+      "id": "ernest_koller",
+      "facts": [],
+      "name": "Коллер Ернест Вільгельмович",
+      "sex": "M",
+      "nationality": "німець",
+      "name_variants": [
+        "Коллер Э. В.",
+        "Колер Ернест",
+        "Koller Ernst Wilhelm",
+        "Köhler Ernst"
+      ],
+      "occupations": [
+        "кресляр на електростанції (за родинними відомостями)"
+      ],
+      "birth": {
+        "date": "бл. 1884",
+        "note": "у 1932 р. мав 48 років",
+        "source": "family"
+      }
+    },
+    "maria_rusina": {
+      "id": "maria_rusina",
+      "facts": [],
+      "name": "Русіна Марія Василівна",
+      "sex": "F",
+      "name_variants": [
+        "Русина Мария Васильевна",
+        "Коллер Марія Василівна"
+      ],
+      "occupations": [
+        "креслярка на електростанції (за родинними відомостями)"
+      ],
+      "birth": {
+        "date": "бл. 1904",
+        "note": "у 1932 р. мала 28 років",
+        "source": "family"
+      }
+    },
+    "zoya_rusina": {
+      "id": "zoya_rusina",
+      "facts": [],
+      "name": "Русіна Зоя Василівна",
+      "sex": "F",
+      "name_variants": [
+        "Русина Зоя Васильевна"
+      ],
+      "occupations": [],
+      "birth": {
+        "date": "1902",
+        "source": "family"
+      }
+    },
+    "wilhelm_koller": {
+      "id": "wilhelm_koller",
+      "facts": [],
+      "name": "Вільгельм Коллер",
+      "sex": "M",
+      "inferred": true,
+      "note": "Батько Ернеста — виведено з по батькові",
+      "name_variants": [],
+      "occupations": []
+    },
+    "vasyl_rusin": {
+      "id": "vasyl_rusin",
+      "facts": [],
+      "name": "Василь Русін (Русин)",
+      "sex": "M",
+      "inferred": true,
+      "note": "Батько Марії та Зої — виведено з по батькові",
+      "name_variants": [],
+      "occupations": []
+    }
+  },
+  "relations": [
+    {
+      "type": "spouse",
+      "a": "ernest_koller",
+      "b": "maria_rusina",
+      "source": "family",
+      "confidence": "family"
+    },
+    {
+      "type": "sibling",
+      "a": "maria_rusina",
+      "b": "zoya_rusina",
+      "source": "family",
+      "confidence": "family"
+    },
+    {
+      "type": "parent",
+      "a": "wilhelm_koller",
+      "b": "ernest_koller",
+      "source": "family",
+      "confidence": "inferred"
+    },
+    {
+      "type": "parent",
+      "a": "vasyl_rusin",
+      "b": "maria_rusina",
+      "source": "family",
+      "confidence": "inferred"
+    },
+    {
+      "type": "parent",
+      "a": "vasyl_rusin",
+      "b": "zoya_rusina",
+      "source": "family",
+      "confidence": "inferred"
+    }
+  ],
+  "sources": {
+    "family": {
+      "id": "family",
+      "title": "Родинні відомості",
+      "url": null,
+      "archive_ref": null
+    }
+  },
+  "leads": [],
+  "log": [],
+  "archive": {
+    "name": "Державний архів Одеської області (ДАОО)",
+    "wiki": "https://uk.wikisource.org",
+    "root_page": "Архів:ДАОО"
+  },
+  "questions": [
+    "Ернест Коллер: де працював (яка електростанція / установа), посада, особова справа (номер фонду, опису, справи).",
+    "Ернест Коллер і Марія Русіна: коли і де одружилися (актові записи РАЦС/ЗАГС, лютеранська чи православна церква).",
+    "Марія Русіна: де і коли народилася, хрещення (метричні книги), освіта, робота креслярем.",
+    "Зоя Русіна (1902 р. н.): де і коли народилася, чи була одружена, з ким.",
+    "Батьки: Вільгельм Коллер та Василь Русін — будь-які згадки."
+  ],
+  "updated": "2026-11-04 16:11 UTC"
+}

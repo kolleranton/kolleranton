@@ -1,0 +1,73 @@
+name: Родовід — пошук і сайт
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_agent:
+        description: "Запустити агента пошуку в архіві (потрібен секрет ANTHROPIC_API_KEY)"
+        type: boolean
+        default: true
+      focus:
+        description: "Фокус цього запуску (необов'язково), напр. «Зоя Русіна: шлюб»"
+        type: string
+        default: ""
+      max_steps:
+        description: "Максимум кроків агента"
+        type: string
+        default: "80"
+  push:
+    branches: [master]
+    paths: ["genealogy/**"]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: genealogy
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r genealogy/requirements.txt
+
+      - name: Агент шукає в архіві
+        if: github.event_name == 'workflow_dispatch' && inputs.run_agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FOCUS: ${{ inputs.focus }}
+          MAX_STEPS: ${{ inputs.max_steps }}
+        run: python genealogy/agent.py --focus "$FOCUS" --max-steps "$MAX_STEPS"
+
+      - name: Зберегти знахідки в репозиторій
+        if: github.event_name == 'workflow_dispatch' && inputs.run_agent
+        run: |
+          git config user.name "genealogy-agent"
+          git config user.email "genealogy-agent@users.noreply.github.com"
+          git add genealogy/data
+          git diff --cached --quiet || git commit -m "Родовід: нові знахідки агента"
+          git push
+
+      - name: Зібрати сайт
+        run: python genealogy/build_site.py --out site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
