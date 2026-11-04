@@ -1,0 +1,57 @@
+# Вихідні дані для агента. Редагуйте цей файл, щоб додати нових людей
+# або нові питання — агент прочитає його на початку кожного запуску.
+
+archive:
+  name: "Державний архів Одеської області (ДАОО)"
+  # Розділ ДАОО на українській Вікіджерелах (описи фондів, переліки справ)
+  wiki: "https://uk.wikisource.org"
+  root_page: "Архів:ДАОО"
+
+people:
+  - id: ernest_koller
+    name: "Коллер Ернест Вільгельмович"
+    name_variants: ["Коллер Э. В.", "Колер Ернест", "Koller Ernst Wilhelm", "Köhler Ernst"]
+    sex: M
+    birth: { date: "бл. 1884", note: "у 1932 р. мав 48 років" }
+    nationality: "німець"
+    occupations: ["кресляр на електростанції (за родинними відомостями)"]
+
+  - id: maria_rusina
+    name: "Русіна Марія Василівна"
+    name_variants: ["Русина Мария Васильевна", "Коллер Марія Василівна"]
+    sex: F
+    birth: { date: "бл. 1904", note: "у 1932 р. мала 28 років" }
+    occupations: ["креслярка на електростанції (за родинними відомостями)"]
+
+  - id: zoya_rusina
+    name: "Русіна Зоя Василівна"
+    name_variants: ["Русина Зоя Васильевна"]
+    sex: F
+    birth: { date: "1902" }
+
+  # Особи, виведені з по батькові (ім'я батька відоме, інше — ні)
+  - id: wilhelm_koller
+    name: "Вільгельм Коллер"
+    sex: M
+    inferred: true
+    note: "Батько Ернеста — виведено з по батькові"
+
+  - id: vasyl_rusin
+    name: "Василь Русін (Русин)"
+    sex: M
+    inferred: true
+    note: "Батько Марії та Зої — виведено з по батькові"
+
+relations:
+  - { type: spouse, a: ernest_koller, b: maria_rusina }
+  - { type: sibling, a: maria_rusina, b: zoya_rusina }
+  - { type: parent, parent: wilhelm_koller, child: ernest_koller, inferred: true }
+  - { type: parent, parent: vasyl_rusin, child: maria_rusina, inferred: true }
+  - { type: parent, parent: vasyl_rusin, child: zoya_rusina, inferred: true }
+
+questions:
+  - "Ернест Коллер: де працював (яка електростанція / установа), посада, особова справа (номер фонду, опису, справи)."
+  - "Ернест Коллер і Марія Русіна: коли і де одружилися (актові записи РАЦС/ЗАГС, лютеранська чи православна церква)."
+  - "Марія Русіна: де і коли народилася, хрещення (метричні книги), освіта, робота креслярем."
+  - "Зоя Русіна (1902 р. н.): де і коли народилася, чи була одружена, з ким."
+  - "Батьки: Вільгельм Коллер та Василь Русін — будь-які згадки."

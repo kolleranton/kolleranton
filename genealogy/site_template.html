@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Родовід Коллерів і Русіних</title>
+<style>
+:root {
+  --bg: #f6f1e7; --surface: #fffdf8; --ink: #2b2620; --muted: #6f655a; --line: #b9a98f;
+  --accent: #8a4b2a; --accent-soft: #f0e2d3; --m: #3f6b8a; --f: #9a4a5e; --border: #e2d7c5;
+  --shadow: 0 1px 2px rgba(60,40,20,.08), 0 4px 14px rgba(60,40,20,.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1b1916; --surface: #25221e; --ink: #ece4d6; --muted: #a89c8b; --line: #6d6152;
+    --accent: #e0a07a; --accent-soft: #3a2c22; --m: #8fb6d4; --f: #dd9aab; --border: #3a352e;
+    --shadow: 0 1px 2px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1b1916; --surface: #25221e; --ink: #ece4d6; --muted: #a89c8b; --line: #6d6152;
+  --accent: #e0a07a; --accent-soft: #3a2c22; --m: #8fb6d4; --f: #dd9aab; --border: #3a352e;
+  --shadow: 0 1px 2px rgba(0,0,0,.4);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.55 "Iowan Old Style", "PT Serif", Georgia, "Times New Roman", serif; }
+header { padding: 40px 16px 8px; text-align: center; }
+h1 { font-size: clamp(1.7rem, 4vw, 2.6rem); margin: 0 0 4px; letter-spacing: .01em; }
+.sub { color: var(--muted); margin: 0; }
+nav { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; padding: 16px; position: sticky; top: 0;
+  background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); z-index: 5; }
+nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border);
+  font: 14px/1.2 system-ui, sans-serif; }
+nav a:hover { background: var(--accent-soft); }
+main { max-width: 1180px; margin: 0 auto; padding: 0 16px 64px; }
+section { margin-top: 36px; }
+h2 { font-size: 1.4rem; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+.legend { display: flex; gap: 18px; flex-wrap: wrap; color: var(--muted); font: 13px system-ui, sans-serif; margin-bottom: 10px; }
+.legend span::before { content: ""; display: inline-block; width: 22px; vertical-align: middle; margin-right: 6px; border-top: 2px solid var(--line); }
+.legend .dash::before { border-top-style: dashed; }
+#tree-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); }
+#tree { position: relative; padding: 28px 24px; min-width: max-content; margin: 0 auto; }
+#tree svg { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.gen { display: flex; justify-content: center; gap: 28px; margin-bottom: 70px; position: relative; }
+.gen:last-of-type { margin-bottom: 0; }
+.gen-label { position: absolute; left: 0; top: -20px; font: 12px system-ui, sans-serif; color: var(--muted); }
+.card { position: relative; z-index: 1; width: 200px; padding: 12px 14px; border-radius: 12px; background: var(--surface);
+  border: 1.5px solid var(--border); border-top: 4px solid var(--muted); cursor: pointer; text-align: left;
+  font: inherit; color: inherit; box-shadow: var(--shadow); transition: transform .12s; }
+.card:hover, .card:focus-visible { transform: translateY(-2px); outline: 2px solid var(--accent); outline-offset: 2px; }
+.card.M { border-top-color: var(--m); } .card.F { border-top-color: var(--f); }
+.card.inferred { border-style: dashed; border-top-style: solid; opacity: .85; }
+.card .nm { font-weight: 600; line-height: 1.25; }
+.card .dt { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.card .badge { display: inline-block; margin-top: 6px; font: 11px system-ui, sans-serif; padding: 2px 8px; border-radius: 99px;
+  background: var(--accent-soft); color: var(--accent); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.person { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow); scroll-margin-top: 80px; }
+.person h3 { margin: 0 0 4px; font-size: 1.1rem; }
+.person.hl { outline: 3px solid var(--accent); }
+.meta { color: var(--muted); font-size: 14px; margin: 0 0 8px; }
+ul.facts { margin: 8px 0 0; padding-left: 18px; }
+ul.facts li { margin: 4px 0; }
+.conf { font: 11px system-ui, sans-serif; color: var(--muted); border: 1px solid var(--border); padding: 0 6px; border-radius: 99px; margin-left: 4px; }
+.conf.possible { color: var(--f); border-color: currentColor; }
+sup a, a { color: var(--accent); }
+table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; font-size: 15px; }
+th { font: 600 13px system-ui, sans-serif; color: var(--muted); background: var(--accent-soft); }
+.table-wrap { overflow-x: auto; }
+.empty { color: var(--muted); font-style: italic; }
+.report { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 8px 22px; box-shadow: var(--shadow); }
+footer { text-align: center; color: var(--muted); font: 13px system-ui, sans-serif; padding: 24px 16px 40px; }
+#theme { position: absolute; right: 16px; top: 16px; background: none; border: 1px solid var(--border); color: var(--ink);
+  border-radius: 99px; padding: 4px 10px; cursor: pointer; font: 13px system-ui, sans-serif; }
+@media (max-width: 600px) { .card { width: 150px; padding: 10px; } .gen { gap: 14px; } #tree { padding: 24px 12px; } }
+</style>
+</head>
+<body>
+<button id="theme" type="button" aria-label="Змінити тему">◐</button>
+<header>
+  <h1>Родовід Коллерів і Русіних</h1>
+  <p class="sub" id="subtitle"></p>
+</header>
+<nav>
+  <a href="#s-tree">Дерево</a><a href="#s-people">Особи</a><a href="#s-leads">Справи для замовлення</a>
+  <a href="#s-sources">Джерела</a><a href="#s-report">Звіт агента</a>
+</nav>
+<main>
+  <section id="s-tree">
+    <h2>Дерево</h2>
+    <div class="legend"><span>підтверджено</span><span class="dash">виведено / ймовірно</span></div>
+    <div id="tree-wrap"><div id="tree"></div></div>
+  </section>
+  <section id="s-people"><h2>Особи</h2><div class="grid" id="people"></div></section>
+  <section id="s-leads"><h2>Справи для замовлення в архіві</h2><div class="table-wrap" id="leads"></div></section>
+  <section id="s-sources"><h2>Джерела</h2><div class="table-wrap" id="sources"></div></section>
+  <section id="s-report"><h2>Звіт агента</h2><div class="report" id="report"></div></section>
+</main>
+<footer id="footer"></footer>
+<script>
+const DATA = /*__DATA__*/null;
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const people = DATA.people, rels = DATA.relations, sources = DATA.sources;
+const ids = Object.keys(people);
+
+try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+$("#theme").onclick = () => {
+  const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+  const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+  const next = cur === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem("theme", next); } catch (e) {}
+  requestAnimationFrame(drawLines);
+};
+
+$("#subtitle").textContent = (DATA.archive?.name || "") + (DATA.updated ? " · оновлено " + DATA.updated : "");
+
+// ---------- relations index
+const parentsOf = {}, childrenOf = {}, spousesOf = {}, siblingsOf = {};
+ids.forEach((id) => { parentsOf[id] = []; childrenOf[id] = []; spousesOf[id] = []; siblingsOf[id] = []; });
+rels.forEach((r) => {
+  if (!(r.a in people) || !(r.b in people)) return;
+  if (r.type === "parent") { parentsOf[r.b].push(r.a); childrenOf[r.a].push(r.b); }
+  else if (r.type === "spouse") { spousesOf[r.a].push(r.b); spousesOf[r.b].push(r.a); }
+  else if (r.type === "sibling") { siblingsOf[r.a].push(r.b); siblingsOf[r.b].push(r.a); }
+});
+const relOf = (a, b, type) => rels.find((r) => r.type === type && ((r.a === a && r.b === b) || (type !== "parent" && r.a === b && r.b === a)));
+const uncertain = (r) => !r || r.confidence === "inferred" || r.confidence === "possible";
+
+// ---------- generations (BFS from the first person of each connected component)
+const gen = {};
+ids.forEach((start) => {
+  if (start in gen) return;
+  gen[start] = 0; const q = [start];
+  while (q.length) {
+    const id = q.shift();
+    const push = (o, g) => { if (!(o in gen)) { gen[o] = g; q.push(o); } };
+    parentsOf[id].forEach((p) => push(p, gen[id] - 1));
+    childrenOf[id].forEach((c) => push(c, gen[id] + 1));
+    spousesOf[id].forEach((s) => push(s, gen[id]));
+    siblingsOf[id].forEach((s) => push(s, gen[id]));
+  }
+});
+const gens = [...new Set(Object.values(gen))].sort((a, b) => a - b);
+const rows = {}; gens.forEach((g) => (rows[g] = ids.filter((id) => gen[id] === g)));
+
+// order rows: keep spouses adjacent; parents above children
+function groupCouples(list) {
+  const out = [];
+  list.forEach((id) => {
+    if (out.includes(id)) return;
+    const sibs = siblingsOf[id].filter((s) => list.includes(s) && !out.includes(s));
+    [id, ...sibs].forEach((x) => {
+      if (out.includes(x)) return;
+      // spouse goes before a person if that person has siblings after, otherwise after
+      const sp = spousesOf[x].filter((s) => list.includes(s) && !out.includes(s));
+      if (sp.length && siblingsOf[x].length && !out.length) out.push(...sp, x); else out.push(x, ...sp);
+    });
+  });
+  return out;
+}
+const pos = {};
+const setPos = (g) => rows[g].forEach((id, i) => (pos[id] = i));
+const avg = (arr) => (arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : Infinity);
+const zero = gens.includes(0) ? 0 : gens[0];
+rows[zero] = groupCouples(rows[zero]); setPos(zero);
+for (let g = zero - 1; g >= gens[0]; g--) {
+  rows[g].sort((a, b) => avg(childrenOf[a].map((c) => pos[c] ?? 0)) - avg(childrenOf[b].map((c) => pos[c] ?? 0)));
+  rows[g] = groupCouples(rows[g]); setPos(g);
+}
+for (let g = zero + 1; g <= gens[gens.length - 1]; g++) {
+  rows[g].sort((a, b) => avg(parentsOf[a].map((p) => pos[p] ?? 0)) - avg(parentsOf[b].map((p) => pos[p] ?? 0)));
+  rows[g] = groupCouples(rows[g]); setPos(g);
+}
+
+// ---------- render tree
+const years = (p) => {
+  const b = p.birth?.date, d = p.death?.date;
+  if (!b && !d) return "";
+  return (b ? "нар. " + b : "") + (d ? (b ? " — " : "") + "пом. " + d : "");
+};
+const treeEl = $("#tree");
+const genName = (g) => ({ "-2": "Прадіди", "-1": "Батьки", "0": "", "1": "Діти", "2": "Онуки" })[g - zero] ?? "";
+treeEl.innerHTML = gens.map((g) => `<div class="gen">${genName(g) ? `<span class="gen-label">${genName(g)}</span>` : ""}${
+  rows[g].map((id) => {
+    const p = people[id], n = (p.facts || []).length;
+    return `<button class="card ${esc(p.sex || "")} ${p.inferred ? "inferred" : ""}" data-id="${esc(id)}" type="button">
+      <div class="nm">${esc(p.name || id)}</div><div class="dt">${esc(years(p))}</div>
+      ${n ? `<span class="badge">${n} ${n === 1 ? "факт" : n < 5 ? "факти" : "фактів"}</span>` : ""}</button>`;
+  }).join("")}</div>`).join("") + `<svg aria-hidden="true"></svg>`;
+
+treeEl.addEventListener("click", (e) => {
+  const c = e.target.closest(".card"); if (!c) return;
+  const el = document.getElementById("p-" + c.dataset.id);
+  document.querySelectorAll(".person.hl").forEach((x) => x.classList.remove("hl"));
+  el.classList.add("hl"); el.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+function drawLines() {
+  const svg = treeEl.querySelector("svg"), base = treeEl.getBoundingClientRect();
+  svg.setAttribute("width", treeEl.scrollWidth); svg.setAttribute("height", treeEl.scrollHeight);
+  const box = (id) => {
+    const r = treeEl.querySelector(`.card[data-id="${CSS.escape(id)}"]`).getBoundingClientRect();
+    return { l: r.left - base.left, r: r.right - base.left, t: r.top - base.top, b: r.bottom - base.top, cx: (r.left + r.right) / 2 - base.left, cy: (r.top + r.bottom) / 2 - base.top };
+  };
+  const stroke = getComputedStyle(document.documentElement).getPropertyValue("--line").trim();
+  const path = (d, dashed) => `<path d="${d}" fill="none" stroke="${stroke}" stroke-width="2" ${dashed ? 'stroke-dasharray="6 5"' : ""}/>`;
+  let out = "";
+  // spouses
+  rels.filter((r) => r.type === "spouse" && r.a in people && r.b in people).forEach((r) => {
+    let A = box(r.a), B = box(r.b); if (A.cx > B.cx) [A, B] = [B, A];
+    out += path(`M${A.r},${A.cy} L${B.l},${B.cy}`, uncertain(r));
+  });
+  // parents → children (grouped by parent set)
+  const families = {};
+  ids.forEach((c) => { if (parentsOf[c].length) { const k = [...parentsOf[c]].sort().join("|"); (families[k] ||= []).push(c); } });
+  Object.entries(families).forEach(([k, kids]) => {
+    const ps = k.split("|").map(box);
+    const top = Math.max(...ps.map((p) => p.b));
+    const x0 = ps.length > 1 && ps.every((p) => Math.abs(p.cy - ps[0].cy) < 2) ? avg(ps.map((p) => p.cx)) : ps[0].cx;
+    const y0 = ps.length > 1 ? ps[0].cy : top;
+    const ks = kids.map(box), yMid = Math.min(...ks.map((c) => c.t)) - 32;
+    kids.forEach((kid, i) => {
+      const dashed = k.split("|").every((p) => uncertain(relOf(p, kid, "parent")));
+      out += path(`M${x0},${y0} L${x0},${yMid} L${ks[i].cx},${yMid} L${ks[i].cx},${ks[i].t}`, dashed);
+    });
+  });
+  // siblings without a known shared parent
+  rels.filter((r) => r.type === "sibling" && r.a in people && r.b in people).forEach((r) => {
+    if (parentsOf[r.a].some((p) => parentsOf[r.b].includes(p))) return;
+    let A = box(r.a), B = box(r.b); if (A.cx > B.cx) [A, B] = [B, A];
+    const y = Math.min(A.t, B.t) - 14;
+    out += path(`M${A.cx},${A.t} L${A.cx},${y} L${B.cx},${y} L${B.cx},${B.t}`, true);
+  });
+  svg.innerHTML = out;
+}
+window.addEventListener("resize", () => requestAnimationFrame(drawLines));
+requestAnimationFrame(drawLines);
+document.fonts?.ready.then(drawLines);
+
+// ---------- people
+const srcLink = (sid) => sid && sources[sid] ? `<sup><a href="#src-${esc(sid)}">[${esc(sid === "family" ? "сім." : sid)}]</a></sup>` : "";
+const confLabel = { possible: "ймовірно", inferred: "виведено", confirmed: "", family: "" };
+const nameOf = (id) => `<a href="#p-${esc(id)}">${esc(people[id]?.name || id)}</a>`;
+$("#people").innerHTML = ids.map((id) => {
+  const p = people[id];
+  const kin = [
+    ["Батьки", parentsOf[id]], ["Подружжя", spousesOf[id]], ["Брати/сестри", siblingsOf[id]], ["Діти", childrenOf[id]],
+  ].filter(([, l]) => l.length).map(([t, l]) => `${t}: ${l.map(nameOf).join(", ")}`).join("<br>");
+  const facts = [...(p.facts || [])].sort((a, b) => String(a.date || "").localeCompare(String(b.date || "")));
+  const event = (lbl, e) => e && (e.date || e.place) ? `<li>${lbl}: ${esc([e.date, e.place].filter(Boolean).join(", "))}${e.note ? ` (${esc(e.note)})` : ""} ${srcLink(e.source)}</li>` : "";
+  return `<article class="person" id="p-${esc(id)}">
+    <h3>${esc(p.name || id)}</h3>
+    <p class="meta">${[p.nationality, p.inferred ? "особу виведено з по батькові" : "", (p.name_variants || []).length ? "також: " + p.name_variants.join("; ") : ""].filter(Boolean).map(esc).join(" · ")}</p>
+    ${kin ? `<p class="meta">${kin}</p>` : ""}
+    <ul class="facts">
+      ${event("Народження", p.birth)}${event("Смерть", p.death)}
+      ${(p.occupations || []).map((o) => `<li>Заняття: ${esc(o)}</li>`).join("")}
+      ${facts.map((f) => `<li>${f.date ? `<b>${esc(f.date)}</b> — ` : ""}${esc(f.text)}${f.place ? `, ${esc(f.place)}` : ""}
+        ${confLabel[f.confidence] ? `<span class="conf ${esc(f.confidence)}">${confLabel[f.confidence]}</span>` : ""} ${srcLink(f.source)}</li>`).join("")}
+    </ul>
+    ${p.note ? `<p class="meta">${esc(p.note)}</p>` : ""}
+  </article>`;
+}).join("");
+
+// ---------- leads
+const leads = DATA.leads || [];
+$("#leads").innerHTML = leads.length ? `<table><thead><tr><th>Шифр</th><th>Справа</th><th>Кого стосується</th><th>Чому</th></tr></thead><tbody>${
+  leads.map((l) => `<tr><td>${l.url ? `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.archive_ref)}</a>` : esc(l.archive_ref)}</td>
+    <td>${esc(l.text)}</td><td>${(l.person_ids || []).filter((x) => x in people).map(nameOf).join(", ")}</td><td>${esc(l.why || "")}</td></tr>`).join("")
+}</tbody></table>` : `<p class="empty">Поки немає — запустіть агента пошуку.</p>`;
+
+// ---------- sources
+$("#sources").innerHTML = `<table><thead><tr><th>№</th><th>Назва</th><th>Шифр</th></tr></thead><tbody>${
+  Object.values(sources).map((s) => `<tr id="src-${esc(s.id)}"><td>${esc(s.id === "family" ? "сім." : s.id)}</td>
+    <td>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>` : esc(s.title)}</td><td>${esc(s.archive_ref || "")}</td></tr>`).join("")
+}</tbody></table>`;
+
+// ---------- report (minimal markdown)
+function md(text) {
+  const inline = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/_(.+?)_/g, "<i>$1</i>")
+    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  let html = "", list = false;
+  text.split("\n").forEach((line) => {
+    const li = line.match(/^\s*[-*]\s+(.*)/), h = line.match(/^(#{1,4})\s+(.*)/);
+    if (!li && list) { html += "</ul>"; list = false; }
+    if (h) html += `<h${h[1].length + 2}>${inline(h[2])}</h${h[1].length + 2}>`;
+    else if (li) { if (!list) { html += "<ul>"; list = true; } html += `<li>${inline(li[1])}</li>`; }
+    else if (line.trim()) html += `<p>${inline(line)}</p>`;
+  });
+  return html + (list ? "</ul>" : "");
+}
+$("#report").innerHTML = DATA.report ? md(DATA.report) : `<p class="empty">Агента ще не запускали.</p>`;
+$("#footer").innerHTML = `Дані зібрано агентом-генеалогом з ${esc(DATA.archive?.wiki || "")} · перевіряйте знахідки за оригіналами документів в архіві.`;
+</script>
+</body>
+</html>
