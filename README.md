@@ -32,7 +32,7 @@ python genealogy/build_site.py                 # сайт у site/index.html
 
 1. **Settings → Secrets and variables → Actions** → додайте секрет `ANTHROPIC_API_KEY`.
 2. **Settings → Pages → Source: GitHub Actions**.
-3. Злийте цю гілку в `main`, потім **Actions → «Родовід — пошук і сайт» → Run workflow**.
+3. Злийте цю гілку в `master`, потім **Actions → «Родовід — пошук і сайт» → Run workflow**.
    Агент пошукає, закомітить знахідки, а сайт з'явиться за адресою
    `https://kolleranton.github.io/kolleranton/`.
 

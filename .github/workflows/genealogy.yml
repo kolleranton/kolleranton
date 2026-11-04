@@ -16,7 +16,7 @@ on:
         type: string
         default: "80"
   push:
-    branches: [main]
+    branches: [master]
     paths: ["genealogy/**"]
 
 permissions:
